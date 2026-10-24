@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDFB"/>
+      <stop offset="1" stop-color="#FFF6EE"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E23B2E"/>
+      <stop offset="1" stop-color="#FF7A2F"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="680" rx="24" fill="url(#bg)" stroke="#F2E2D6" stroke-width="2"/>
+
+  <!-- 标题 -->
+  <text x="52" y="66" font-size="30" font-weight="700" fill="#2B2118">麦凑单 · 团餐分账卡</text>
+  <text x="52" y="96" font-size="16" fill="#9A8B7E">4 人一起点麦当劳 · 示例数据（非官方菜单与定价）</text>
+
+  <!-- 右侧徽标 -->
+  <rect x="806" y="42" width="146" height="40" rx="20" fill="#FDECEA"/>
+  <text x="879" y="68" font-size="17" font-weight="700" fill="#E23B2E" text-anchor="middle">省 ¥9.00 · 9.5%</text>
+
+  <!-- 主视觉：价格变化 -->
+  <rect x="52" y="124" width="896" height="112" rx="16" fill="#FFFFFF" stroke="#F0E3D8" stroke-width="1.5"/>
+
+  <text x="84" y="166" font-size="15" fill="#9A8B7E">各点各的</text>
+  <text x="84" y="204" font-size="34" font-weight="600" fill="#B9A99B">¥94.50</text>
+  <line x1="82" y1="192" x2="198" y2="192" stroke="#C4B4A6" stroke-width="2.5"/>
+
+  <text x="290" y="196" font-size="30" fill="#E2B38C">→</text>
+
+  <text x="352" y="166" font-size="15" fill="#9A8B7E">最优解实付</text>
+  <text x="352" y="208" font-size="44" font-weight="800" fill="#E23B2E">¥85.50</text>
+
+  <text x="560" y="166" font-size="15" fill="#9A8B7E">原价 ¥119.50 → 优惠 ¥40.00</text>
+  <text x="560" y="196" font-size="15" fill="#9A8B7E">用上：满 120 减 40</text>
+
+  <!-- 反直觉的那一步 -->
+  <rect x="52" y="256" width="896" height="84" rx="16" fill="url(#hero)"/>
+  <text x="84" y="292" font-size="16" font-weight="700" fill="#FFFFFF" opacity="0.9">反直觉的那一步</text>
+  <text x="84" y="320" font-size="20" font-weight="700" fill="#FFFFFF">再加一份 ¥6.00 的甜筒，订单推到 ¥125.50，实付反而少 ¥9.00</text>
+
+  <!-- 分账表 -->
+  <text x="52" y="386" font-size="18" font-weight="700" fill="#2B2118">谁该付多少</text>
+
+  <line x1="52" y1="404" x2="948" y2="404" stroke="#EFE2D7" stroke-width="1.5"/>
+  <text x="52" y="428" font-size="14" fill="#9A8B7E">人</text>
+  <text x="150" y="428" font-size="14" fill="#9A8B7E">点单</text>
+  <text x="588" y="428" font-size="14" fill="#9A8B7E" text-anchor="end">小计</text>
+  <text x="728" y="428" font-size="14" fill="#9A8B7E" text-anchor="end">分摊优惠</text>
+  <text x="900" y="428" font-size="14" fill="#9A8B7E" text-anchor="end">应付</text>
+  <line x1="52" y1="440" x2="948" y2="440" stroke="#EFE2D7" stroke-width="1.5"/>
+
+  <g font-size="16" fill="#3D3128">
+    <text x="52" y="472" font-weight="600">张伟</text>
+    <text x="150" y="472" fill="#6B5B4E">巨无霸、可乐（中）、甜筒（公摊）</text>
+    <text x="588" y="472" text-anchor="end" fill="#6B5B4E">¥36.50</text>
+    <text x="728" y="472" text-anchor="end" fill="#2E8B57">-¥11.63</text>
+    <text x="900" y="472" text-anchor="end" font-weight="700">¥24.87</text>
+
+    <text x="52" y="508" font-weight="600">李娜</text>
+    <text x="150" y="508" fill="#6B5B4E">麦辣鸡腿堡、中薯条、甜筒（公摊）</text>
+    <text x="588" y="508" text-anchor="end" fill="#6B5B4E">¥36.00</text>
+    <text x="728" y="508" text-anchor="end" fill="#2E8B57">-¥11.47</text>
+    <text x="900" y="508" text-anchor="end" font-weight="700">¥24.53</text>
+
+    <text x="52" y="544" font-weight="600">王强</text>
+    <text x="150" y="544" fill="#6B5B4E">板烧鸡腿堡、零度可乐、甜筒（公摊）</text>
+    <text x="588" y="544" text-anchor="end" fill="#6B5B4E">¥35.00</text>
+    <text x="728" y="544" text-anchor="end" fill="#2E8B57">-¥11.16</text>
+    <text x="900" y="544" text-anchor="end" font-weight="700">¥23.84</text>
+
+    <text x="52" y="580" font-weight="600">赵敏</text>
+    <text x="150" y="580" fill="#6B5B4E">麦香鱼、甜筒（公摊）</text>
+    <text x="588" y="580" text-anchor="end" fill="#6B5B4E">¥18.00</text>
+    <text x="728" y="580" text-anchor="end" fill="#2E8B57">-¥5.74</text>
+    <text x="900" y="580" text-anchor="end" font-weight="700">¥12.26</text>
+  </g>
+
+  <line x1="52" y1="598" x2="948" y2="598" stroke="#EFE2D7" stroke-width="1.5"/>
+  <text x="52" y="626" font-size="16" font-weight="700" fill="#2B2118">合计</text>
+  <text x="588" y="626" text-anchor="end" font-size="15" fill="#6B5B4E">¥125.50</text>
+  <text x="728" y="626" text-anchor="end" font-size="15" fill="#2E8B57" font-weight="700">-¥40.00</text>
+  <text x="900" y="626" text-anchor="end" font-size="18" font-weight="800" fill="#E23B2E">¥85.50</text>
+</svg>

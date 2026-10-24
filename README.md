@@ -5,8 +5,12 @@
 
 **核心命题：吃饭凑单这道算术题，人算不清，大模型也算不清。**
 
+> 🖥 **在线试算**：[robll-v1.github.io/mcd-group-deal](https://robll-v1.github.io/mcd-group-deal/)
+> —— 不用装任何东西，改一下谁想吃什么，金额和分账当场重算。
+> （也可直接打开仓库里的 `docs/index.html`）
+
 <p align="center">
-  <img src="./assets/demo-card.png" alt="麦凑单 · 团餐分账卡" width="860">
+  <img src="./docs/screenshot.jpg" alt="麦凑单 · 首页与实时分账小票" width="900">
 </p>
 
 ---
@@ -62,6 +66,12 @@
 
 > AA 分账最常见的翻车就是「每人算完加起来差一毛钱」——整数分 + 最大余数法可以彻底消除它。
 > 见 `scripts/test_optimizer.py` 里的 `test_allocate_exact`。
+
+同一份结果的图片版（可直接贴群 / 发社交平台）：
+
+<p align="center">
+  <img src="./assets/demo-card.png" alt="分账卡" width="780">
+</p>
 
 ---
 
@@ -161,6 +171,13 @@ mcd-group-deal/
 │   ├── render.py              # 分账卡渲染
 │   ├── demo.py                # 离线演示
 │   └── test_optimizer.py      # 引擎自测（6 个用例）
+├── docs/                      # 在线试算页（GitHub Pages）
+│   ├── index.html
+│   ├── styles/                # tokens / base / components
+│   ├── scripts/main.js        # 引擎的浏览器移植版
+│   ├── fonts/                 # 自托管子集化字体（49KB）
+│   └── DESIGN.md              # 设计定调与自检记录
+├── assets/demo-card.png       # 分账卡效果图
 └── examples/
     └── sample-order.json      # 示例订单（虚构数据）
 ```

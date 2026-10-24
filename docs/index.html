@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>麦凑单 · 一群人点麦当劳，账我来算</title>
+<meta name="description" content="基于麦当劳 MCP 的团餐凑单 Skill：穷举满减阶梯算出实付最低的组合，再把账按人分到分。多买一份反而少付九块。">
+<meta name="theme-color" content="#fff6e9">
+<meta property="og:title" content="麦凑单 · 多买一份，反而少付九块">
+<meta property="og:description" content="办公室一起点麦当劳时，自动凑满减、算出最优组合，并把账按人分到分。">
+<meta property="og:type" content="website">
+<link rel="preload" href="fonts/smiley-sans-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/fredoka-num.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+</head>
+<body class="atmosphere grain">
+
+<div class="page">
+
+  <!-- ============================ 顶栏 ============================ -->
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="麦凑单 首页">
+      <span class="brand__mark" aria-hidden="true">麦</span>
+      <span>麦凑单</span>
+    </a>
+    <nav class="topbar__links" aria-label="主导航">
+      <a class="link-sweep" href="#how">它怎么算</a>
+      <a class="link-sweep" href="#install">接入方式</a>
+      <a class="link-sweep" href="https://github.com/robll-v1/mcd-group-deal" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ============================ 首屏 ============================ -->
+    <section class="hero">
+      <div class="hero__text">
+        <span class="eyebrow reveal" style="--delay:0ms">
+          <span class="eyebrow__dot" aria-hidden="true"></span>
+          麦当劳程序员创意开发大赛 · 参赛作品
+        </span>
+
+        <h1 class="reveal" style="--delay:80ms">
+          多买一份，<br><span class="stroke">反而少付九块。</span>
+        </h1>
+
+        <p class="hero__lede reveal" style="--delay:160ms">
+          四个人的订单卡在 <span class="num">¥119.50</span>，只能吃满 100 减 25。
+          加一份 <span class="num">¥6.00</span> 的甜筒把订单推到 <span class="num">¥125.50</span>，
+          触发满 120 减 40 —— 实付从 <span class="num">¥94.50</span> 掉到 <span class="num">¥85.50</span>。
+          麦凑单会把这个机会算出来，顺便把每个人的账分到分。
+        </p>
+
+        <div class="hero__cta reveal" style="--delay:240ms">
+          <a class="btn btn--primary" href="https://github.com/robll-v1/mcd-group-deal" target="_blank" rel="noopener">
+            去 GitHub 点个 star
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn--ghost" href="#how">它是怎么算的</a>
+        </div>
+
+        <dl class="hero__stats reveal" style="--delay:320ms">
+          <div class="stat">
+            <dd class="stat__num">35</dd>
+            <dt class="stat__label">MCP 可用工具</dt>
+          </div>
+          <div class="stat">
+            <dd class="stat__num">10</dd>
+            <dt class="stat__label">本项目串联</dt>
+          </div>
+          <div class="stat">
+            <dd class="stat__num">6/6</dd>
+            <dt class="stat__label">引擎自测通过</dt>
+          </div>
+          <div class="stat">
+            <dd class="stat__num">0</dd>
+            <dt class="stat__label">第三方依赖</dt>
+          </div>
+        </dl>
+      </div>
+
+      <div class="hero__side reveal" style="--delay:200ms">
+        <!-- 会实时重算的小票：页面的记忆点 -->
+        <div class="receipt-wrap">
+          <article class="receipt" aria-label="实时分账小票">
+            <div class="receipt__head">
+              <div class="receipt__title">麦门小票</div>
+              <div class="receipt__meta">4 人 · 团餐外送 · 示例数据</div>
+            </div>
+
+            <hr class="receipt__rule">
+
+            <div class="receipt__row">
+              <span class="receipt__name">原价合计</span>
+              <span class="receipt__amt" id="r-subtotal">¥119.50</span>
+            </div>
+            <div class="receipt__row receipt__row--muted">
+              <span class="receipt__name" id="r-rule-name">满 100 减 25</span>
+              <span class="receipt__amt" id="r-discount">-¥25.00</span>
+            </div>
+            <div class="receipt__row receipt__row--muted">
+              <span class="receipt__name">凑单件</span>
+              <span class="receipt__amt" id="r-addon">—</span>
+            </div>
+
+            <hr class="receipt__rule">
+
+            <div class="receipt__total">
+              <span class="receipt__total-label">实付</span>
+              <span class="receipt__total-num" id="r-total" aria-live="polite">¥85.50</span>
+            </div>
+
+            <hr class="receipt__rule">
+
+            <div class="bill">
+              <div class="bill__title">分账 / 谁该付多少</div>
+              <div id="r-bill"><!-- JS 渲染 --></div>
+            </div>
+
+            <p class="receipt__row receipt__row--muted" id="r-tip" style="margin-top:12px;display:block">
+              加一份甜筒凑到满 120，整单反而少付 ¥9.00。
+            </p>
+          </article>
+
+          <!-- 印章放在被裁剪的小票外侧，避免被 clip-path 切掉 -->
+          <span class="stamp" id="stamp" data-on="true">省 ¥9.00</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================ 试算控制台 ============================ -->
+    <section class="picker-band" aria-label="实时试算">
+      <div class="picker">
+        <div class="picker__head">
+          <div class="picker__label">改一下他们想吃什么 · 上面的小票会实时重算</div>
+          <label class="switch">
+            <input type="checkbox" id="auto-addon" checked>
+            <span class="switch__track" aria-hidden="true"></span>
+            <span>自动凑满减</span>
+          </label>
+        </div>
+
+        <div class="picker__grid">
+
+          <div class="person">
+            <span class="person__name">张伟</span>
+            <div class="chips" role="radiogroup" aria-label="张伟的主食">
+              <label class="chip"><input type="radio" name="p1" value="bigmac" checked><span>巨无霸</span></label>
+              <label class="chip"><input type="radio" name="p1" value="mcspicy"><span>麦辣</span></label>
+              <label class="chip"><input type="radio" name="p1" value="grilled"><span>板烧</span></label>
+            </div>
+          </div>
+
+          <div class="person">
+            <span class="person__name">李娜</span>
+            <div class="chips" role="radiogroup" aria-label="李娜的主食">
+              <label class="chip"><input type="radio" name="p2" value="mcspicy" checked><span>麦辣</span></label>
+              <label class="chip"><input type="radio" name="p2" value="bigmac"><span>巨无霸</span></label>
+              <label class="chip"><input type="radio" name="p2" value="filetofish"><span>麦香鱼</span></label>
+            </div>
+          </div>
+
+          <div class="person">
+            <span class="person__name">王强</span>
+            <div class="chips" role="radiogroup" aria-label="王强的主食">
+              <label class="chip"><input type="radio" name="p3" value="grilled" checked><span>板烧</span></label>
+              <label class="chip"><input type="radio" name="p3" value="bigmac"><span>巨无霸</span></label>
+              <label class="chip"><input type="radio" name="p3" value="mcspicy"><span>麦辣</span></label>
+            </div>
+          </div>
+
+          <div class="person">
+            <span class="person__name">赵敏</span>
+            <div class="chips" role="radiogroup" aria-label="赵敏的主食">
+              <label class="chip"><input type="radio" name="p4" value="filetofish" checked><span>麦香鱼</span></label>
+              <label class="chip"><input type="radio" name="p4" value="dblcheese"><span>双层吉士</span></label>
+              <label class="chip"><input type="radio" name="p4" value="mcspicy"><span>麦辣</span></label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ 跑马灯：满减阶梯 ============================ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="marquee__item">
+          满 90 减 18 <b>／</b> 满 100 减 25 <b>／</b> 满 120 减 40 <b>／</b> 满 150 减 60 <b>／</b>
+          凑门槛 <b>／</b> 拆单 <b>／</b> 换品 <b>／</b> 分账到分 <b>／</b>
+        </span>
+        <span class="marquee__item">
+          满 90 减 18 <b>／</b> 满 100 减 25 <b>／</b> 满 120 减 40 <b>／</b> 满 150 减 60 <b>／</b>
+          凑门槛 <b>／</b> 拆单 <b>／</b> 换品 <b>／</b> 分账到分 <b>／</b>
+        </span>
+      </div>
+    </div>
+
+    <!-- ============================ 三条路径 ============================ -->
+    <section class="section" id="how">
+      <div class="section__head">
+        <div>
+          <div class="section__kicker">How it computes</div>
+          <h2>不算完，<br>不下结论。</h2>
+        </div>
+        <p class="section__intro reveal">
+          满减阶梯四档、券若干张、四个人各点各的 —— 候选组合是几十到几百种。
+          与其让模型"估一个差不多的"，不如把这件事交给确定性代码。
+          引擎沿三条路径枚举，取实付最低者。
+        </p>
+      </div>
+
+      <div class="path-list">
+        <article class="path reveal">
+          <div class="path__idx" aria-hidden="true">01</div>
+          <div class="path__body">
+            <h3>凑门槛</h3>
+            <p>对每一档还没够到的满减，算出补差金额、能换回多少减免，再看净收益是否为正 —— 不是所有档都值得凑。</p>
+          </div>
+          <div class="path__eg">补 <b>¥6.00</b> → 多减 <b>¥15.00</b><br>净收益 <b>+¥9.00</b></div>
+        </article>
+
+        <article class="path reveal">
+          <div class="path__idx" aria-hidden="true">02</div>
+          <div class="path__body">
+            <h3>拆单</h3>
+            <p>一单吃大额满减，未必比拆成两单各用一张券便宜。引擎枚举所有二分方式，分别结算后取合计更低者。</p>
+          </div>
+          <div class="path__eg">一单 <b>¥85.50</b><br>拆两单 <b>¥82.00</b></div>
+        </article>
+
+        <article class="path reveal">
+          <div class="path__idx" aria-hidden="true">03</div>
+          <div class="path__body">
+            <h3>换品</h3>
+            <p>同品类换更便宜的那款 —— 前提是不因此跌出当前档位。这一步经常能挤出一两块的确定性收益。</p>
+          </div>
+          <div class="path__eg">大薯 <b>→</b> 中薯<br>省 <b>¥2.50</b> 不掉档</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================ 接入方式 ============================ -->
+    <section class="section" id="install">
+      <div class="section__head">
+        <div>
+          <div class="section__kicker">Install</div>
+          <h2>两步接入，<br>不需要 Token 也能看。</h2>
+        </div>
+        <p class="section__intro reveal">
+          真实下单需要麦当劳 MCP Token（官网免费申请）。但引擎本身是纯标准库 Python，
+          仓库自带示例数据，克隆下来就能离线跑通整条链路。
+        </p>
+      </div>
+
+      <div class="term reveal">
+        <div class="term__bar" aria-hidden="true">
+          <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+          <span class="term__path">~/mcd-group-deal</span>
+        </div>
+        <pre><code><span class="c"># 1. 克隆</span>
+<span class="k">$</span> git clone https://github.com/robll-v1/mcd-group-deal
+<span class="k">$</span> cd mcd-group-deal
+
+<span class="c"># 2. 离线看效果（不用 Token）</span>
+<span class="k">$</span> python3 scripts/demo.py
+<span class="s">实付 ¥85.50 · 比各点各的少花 ¥9.00</span>
+
+<span class="c"># 3. 跑引擎自测</span>
+<span class="k">$</span> python3 scripts/test_optimizer.py
+<span class="s">6/6 通过</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ============================ 边界声明 ============================ -->
+    <section class="boundary">
+      <p class="boundary__quote reveal">
+        点单交给它，<br><mark>付钱永远留给你。</mark>
+      </p>
+      <div class="boundary__body reveal">
+        <p>
+          麦当劳 MCP 没有支付能力，<code>create-order</code> 只产出待支付订单。
+          所以我没做"全自动下单" —— 那既做不到，也不该做。
+        </p>
+        <p>
+          所有订单在创建前都会把清单和金额摊开给你确认；凑出来的那一份也按人头均摊，
+          不会变成谁硬塞的一份浪费。
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================ 页脚 ============================ -->
+  <footer class="footer">
+    <p class="footer__note">
+      本页为麦当劳程序员创意开发大赛参赛作品展示页，非麦当劳官方产品。
+      餐品、价格与优惠以麦当劳官方渠道实时返回为准；本页数字为演示用示例数据。
+      代码以 <a href="https://github.com/robll-v1/mcd-group-deal/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> 协议开源。
+    </p>
+    <p>
+      <a href="https://github.com/robll-v1/mcd-group-deal" target="_blank" rel="noopener">GitHub</a>
+      · 麦凑单 mcd-group-deal
+    </p>
+  </footer>
+
+</div>
+
+<script src="scripts/main.js"></script>
+</body>
+</html>

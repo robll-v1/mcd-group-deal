@@ -1,0 +1,41 @@
+{
+  "_comment": "示例数据，仅用于离线演示引擎逻辑。餐品名称与价格均为虚构样例，不代表麦当劳官方菜单或定价；实际使用时请以 MCP 返回的实时数据为准。",
+  "store": {
+    "name": "示例门店（非真实门店）",
+    "note": "真实场景请调用 delivery-query-stores 取得 storeCode 与 beCode"
+  },
+  "skus": [
+    {"code": "bigmac",     "name": "巨无霸",           "price": 25.5, "category": "burger",  "tags": ["含牛肉"]},
+    {"code": "mcspicy",    "name": "麦辣鸡腿堡",       "price": 23.0, "category": "burger",  "tags": ["辣", "含鸡肉"]},
+    {"code": "grilled",    "name": "板烧鸡腿堡",       "price": 24.0, "category": "burger",  "tags": ["含鸡肉"]},
+    {"code": "dblcheese",  "name": "双层吉士汉堡",     "price": 18.5, "category": "burger",  "tags": ["含牛肉"]},
+    {"code": "filetofish", "name": "麦香鱼",           "price": 16.5, "category": "burger",  "tags": ["含鱼肉"]},
+
+    {"code": "fries_m",    "name": "中薯条",           "price": 11.5, "category": "side",    "tags": []},
+    {"code": "fries_l",    "name": "大薯条",           "price": 14.0, "category": "side",    "tags": []},
+    {"code": "nuggets5",   "name": "麦乐鸡（5块）",    "price": 12.5, "category": "side",    "tags": ["含鸡肉"]},
+    {"code": "wings2",     "name": "麦辣鸡翅（2块）",  "price": 13.0, "category": "side",    "tags": ["辣"]},
+
+    {"code": "coke_m",     "name": "可口可乐（中）",   "price": 9.5,  "category": "drink",   "tags": ["冰"]},
+    {"code": "coke_zero",  "name": "零度可乐（中）",   "price": 9.5,  "category": "drink",   "tags": ["冰", "无糖"]},
+    {"code": "icedtea",    "name": "冰红茶（中）",     "price": 9.5,  "category": "drink",   "tags": ["冰"]},
+    {"code": "latte",      "name": "拿铁（中）",       "price": 15.0, "category": "drink",   "tags": ["含咖啡因"]},
+
+    {"code": "cone",       "name": "甜筒",             "price": 6.0,  "category": "dessert", "tags": ["冰"]},
+    {"code": "sundae",     "name": "巧克力新地",       "price": 8.5,  "category": "dessert", "tags": ["冰"]}
+  ],
+  "rules": [
+    {"id": "ladder_90",  "name": "满90减18（团餐阶梯）",  "threshold": 90.0,  "off": 18.0,  "group": "discount"},
+    {"id": "ladder_100", "name": "满100减25（团餐阶梯）", "threshold": 100.0, "off": 25.0,  "group": "discount"},
+    {"id": "ladder_120", "name": "满120减40（团餐阶梯）", "threshold": 120.0, "off": 40.0,  "group": "discount"},
+    {"id": "ladder_150", "name": "满150减60（团餐阶梯）", "threshold": 150.0, "off": 60.0,  "group": "discount"},
+    {"id": "c_bigmac2",  "name": "券·巨无霸第二份半价",   "threshold": 51.0,  "off": 12.75, "group": "discount", "scope": ["bigmac"]}
+  ],
+  "people": [
+    {"name": "张伟", "wants": ["bigmac", "coke_m"],      "budget": 40},
+    {"name": "李娜", "wants": ["mcspicy", "fries_m"],    "budget": 40},
+    {"name": "王强", "wants": ["grilled", "coke_zero"],  "budget": 40},
+    {"name": "赵敏", "wants": ["filetofish"],            "budget": 25}
+  ],
+  "mode": "proportional"
+}

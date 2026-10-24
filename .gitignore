@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+
+# 任何含真实 Token 的本地配置都不要提交
+mcp.json
+.env
